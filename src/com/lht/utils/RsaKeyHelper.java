@@ -1,6 +1,5 @@
 package com.lht.utils;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,21 +18,9 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
-import javax.crypto.Cipher;
-
-public class RSAUtils {
-    public static final String RSA = "RSA";// 非对称加密密钥算法
-    public static final String ECB_PKCS1_PADDING = "RSA/ECB/PKCS1Padding";//加密填充方式
-    /**
-     * 随机生成RSA密钥对(默认密钥长度为1024)
-     *
-     * @return
-     */
-    public static KeyPair generateRSAKeyPair() {
-        return generateRSAKeyPair(1024);
-    }
-
-    /**
+public class RsaKeyHelper {
+	public static final String RSA = "RSA";// 非对称加密密钥算法
+	/**
      * 随机生成RSA密钥对
      *
      * @param keyLength 密钥长度，范围：512～2048<br>
@@ -50,45 +37,6 @@ public class RSAUtils {
             return null;
         }
     }
-
-    /**
-     * 用公钥加密 <br>
-     * 每次加密的字节数，不能超过密钥的长度值减去11
-     *
-     * @param data 需加密数据的byte数据
-     *             公钥
-     * @return 加密后的byte型数据
-     */
-    public static byte[] encryptData(byte[] data, PublicKey publicKey) {
-        try {
-            Cipher cipher = Cipher.getInstance(ECB_PKCS1_PADDING);
-            // 编码前设定编码方式及密钥
-            cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-            // 传入编码数据并返回编码结果
-            return cipher.doFinal(data);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * 用私钥解密
-     *
-     * @param encryptedData 经过encryptedData()加密返回的byte数据
-     * @param privateKey    私钥
-     * @return
-     */
-    public static byte[] decryptData(byte[] encryptedData, PrivateKey privateKey) {
-        try {
-            Cipher cipher = Cipher.getInstance(ECB_PKCS1_PADDING);
-            cipher.init(Cipher.DECRYPT_MODE, privateKey);
-            return cipher.doFinal(encryptedData);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
     /**
      * 通过公钥byte[](publicKey.getEncoded())将公钥还原，适用于RSA算法
      *
@@ -284,5 +232,4 @@ public class RSAUtils {
         System.out.println("PrivatecExponent=" + rsaPrivateKey.getPrivateExponent().toString());
 
     }
-
 }
